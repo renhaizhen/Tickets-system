@@ -1,0 +1,12 @@
+.item-title{
+    text-align: left
+}
+.item-title:after
+{
+content:"";
+display: block;
+height: 1px;
+width: 100%;
+border: 0.25px dotted #cccccc;
+margin-top: 23px;
+}
