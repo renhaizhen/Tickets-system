@@ -8,7 +8,7 @@ import store from './store'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 Vue.config.productionTip = false
-
+require('./mock.js')
 //全局注册iView
 Vue.use(iView)
 //发送请求的原型方法
