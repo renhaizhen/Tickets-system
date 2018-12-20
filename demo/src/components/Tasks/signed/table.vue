@@ -2,8 +2,7 @@
   <div>
     <Table border :columns="columns" class="table" :data="showData">
       <template slot-scope="{ row, index }" slot="action">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">详情</Button>
-        <Button type="error" size="small" @click="remove(index)">确认收款</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">立即接单</Button>
       </template>
     </Table>
     <Page :total="dataCount" :page-size="pageSize" show-elevator  @on-change="changepage"></Page>
@@ -11,8 +10,7 @@
 </template>
 
 <script>
-import api from "./../../axios/api.js";
-import loading from "@/components/common/loading";
+import api from "./../../../axios/api.js";
 export default {
   data() {
     return {
@@ -22,8 +20,6 @@ export default {
       dataCount: 0,
       // 每页显示多少条
       pageSize: 10,
-      //判断数据是否已经获取到
-      dataLength:0,
       //显示数据
       showData: [],
       columns: [
@@ -33,41 +29,24 @@ export default {
           sortable: true
         },
         {
-          title: "票据号",
+          title: "合同编号",
           key: "number"
         },
         {
-          title: "状态",
-          //   这里1代表已完成，0代表未收款
+          title: "签约企业",
+          key: "signedQiYe"
+        },
+        {
+          title: "合同类型",
+          key: "contractType"
+        },
+        {
+          title: "合同状态",
           key: "status"
         },
         {
-          title: "出票日期",
-          key: "outdate"
-        },
-        {
-          title: "出票人",
-          key: "maker"
-        },
-        {
-          title: "票据到期日",
-          key: "expireDate"
-        },
-        {
-          title: "剩余天数",
-          key: "remainDate"
-        },
-        {
-          title: "票据金额",
-          key: "ticketsMoney"
-        },
-        {
-          title: "持有占比",
-          key: "hold"
-        },
-        {
-          title: "待收金额",
-          key: "dueIn"
+          title: "交易金额",
+          key: "amountsMoney"
         },
         {
           title: "操作",
@@ -83,7 +62,7 @@ export default {
   },
   methods: {
     setNewsApi() {
-      api.JH_news("/myTickets", "type=top&key=123456").then(res => {
+      api.JH_news("/signed", "type=top&key=123456").then(res => {
         // console.log(res.myTicketsData);
         this.newsListShow = res.myTicketsData;
         this.dataCount = res.myTicketsData.length;
@@ -107,9 +86,6 @@ export default {
           this.newsListShow[index].age
         }<br>Address：${this.newsListShow[index].address}`
       });
-    },
-    remove(index) {
-      this.newsListShow.splice(index, 1);
     }
   }
 };

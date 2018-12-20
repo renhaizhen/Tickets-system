@@ -2,8 +2,7 @@
   <div>
     <Table border :columns="columns" class="table" :data="showData">
       <template slot-scope="{ row, index }" slot="action">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">详情</Button>
-        <Button type="error" size="small" @click="remove(index)">确认收款</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">立即接单</Button>
       </template>
     </Table>
     <Page :total="dataCount" :page-size="pageSize" show-elevator  @on-change="changepage"></Page>
@@ -11,8 +10,7 @@
 </template>
 
 <script>
-import api from "./../../axios/api.js";
-import loading from "@/components/common/loading";
+import api from "./../../../axios/api.js";
 export default {
   data() {
     return {
@@ -22,28 +20,21 @@ export default {
       dataCount: 0,
       // 每页显示多少条
       pageSize: 10,
-      //判断数据是否已经获取到
-      dataLength:0,
       //显示数据
       showData: [],
       columns: [
         {
-          title: "创建日期",
+          title: "申请日期",
           key: "createDate",
           sortable: true
         },
         {
+          title: "申请企业",
+          key: "require"
+        },
+        {
           title: "票据号",
           key: "number"
-        },
-        {
-          title: "状态",
-          //   这里1代表已完成，0代表未收款
-          key: "status"
-        },
-        {
-          title: "出票日期",
-          key: "outdate"
         },
         {
           title: "出票人",
@@ -54,20 +45,16 @@ export default {
           key: "expireDate"
         },
         {
-          title: "剩余天数",
-          key: "remainDate"
-        },
-        {
           title: "票据金额",
           key: "ticketsMoney"
         },
         {
-          title: "持有占比",
-          key: "hold"
+          title: "贴现占比",
+          key: "discount"
         },
         {
-          title: "待收金额",
-          key: "dueIn"
+          title: "贴现金额",
+          key: "discountMoney"
         },
         {
           title: "操作",
@@ -83,7 +70,7 @@ export default {
   },
   methods: {
     setNewsApi() {
-      api.JH_news("/myTickets", "type=top&key=123456").then(res => {
+      api.JH_news("/discount", "type=top&key=123456").then(res => {
         // console.log(res.myTicketsData);
         this.newsListShow = res.myTicketsData;
         this.dataCount = res.myTicketsData.length;
@@ -107,9 +94,6 @@ export default {
           this.newsListShow[index].age
         }<br>Address：${this.newsListShow[index].address}`
       });
-    },
-    remove(index) {
-      this.newsListShow.splice(index, 1);
     }
   }
 };
